@@ -67,8 +67,8 @@ list3 = remove_regex_pattern_from_list(pat2, list1)
 
 # merges two lists into a dictionary
 dic = dict(zip(list2, list3))
-# print(dic)
 
+# print(dic)
 # sets variable to current date:
 # todaysdate = time.strftime("%d-%m-%Y-%H%M%S")
 todaysdate = time.strftime("%d-%m-%Y-%H"+":00")
@@ -80,6 +80,9 @@ if dictionary_exists:
 # builds dictionary for the first time:
 if not dictionary_exists:
     for key, value in dic.items():
+        if value == '':
+            dic[key] = { todaysdate: { 'new': '-', 'total': '-' } }
+            continue
         if value[-1] == '-':
             dic[key] = { todaysdate: { 'new': '-', 'total': value[ : -1] } }
         if re.match(digit_regex, value[-1]) is not None:
@@ -89,6 +92,9 @@ if not dictionary_exists:
 # adds daily values to existing dict (das heisst - pulled_dic)
 if dictionary_exists:
     for key, value in dic.items():
+        if value == '':
+            dic[key] = { todaysdate: { 'new': '-', 'total': '-' } }
+            continue
         if value[-1] == '-':
             pulled_dic[key][todaysdate] = { 'new': '-', 'total': value[ : -1] }
         if re.match(digit_regex, value[-1]) is not None:
