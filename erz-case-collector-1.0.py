@@ -21,9 +21,6 @@ except IOError:
     print("No saved dict file retrievable, please create one first!")
     dictionary_exists = False
 
-# if dictionary_exists:
-    # print(pulled_dic['Schneeberg'])
-
 page = urlopen("https://www.erzgebirgskreis.de/index.php?id=1126")
 str_page = page.read()
 soup = BeautifulSoup(str_page, "lxml")
@@ -51,7 +48,7 @@ str1 = str1.replace('Wiesenbad2-', 'wiesenbad2-')
 # after string is 'cleaned up' convert back to list:
 #splits on capital letters, be careful! :
 list1 = re.sub( r"([A-Z])", r" \1", str1).split()
-# print(list1)
+
 digit_regex = '[0-9]'
 letter_regex = '[a-zA-Z|äöüÄÖÜß]'
 
@@ -68,14 +65,9 @@ list3 = remove_regex_pattern_from_list(pat2, list1)
 # merges two lists into a dictionary
 dic = dict(zip(list2, list3))
 
-# print(dic)
 # sets variable to current date:
 # todaysdate = time.strftime("%d-%m-%Y-%H%M%S")
 todaysdate = time.strftime("%d-%m-%Y-%H"+":00")
-
-if dictionary_exists:
-    print(pulled_dic['Schneeberg'])
-    # print(type(pulled_dic))
 
 # builds dictionary for the first time:
 if not dictionary_exists:
@@ -89,7 +81,7 @@ if not dictionary_exists:
             dic[key] = { todaysdate: { 'new': value[ value.find('+')+1 : ], 'total': value[ : value.find('+') :  ]  }  }
     print("New dictionary created!")
 
-# adds daily values to existing dict (das heisst - pulled_dic)
+# adds daily values to existing dict (pulled_dic)
 if dictionary_exists:
     for key, value in dic.items():
         if value == '':
@@ -100,19 +92,6 @@ if dictionary_exists:
         if re.match(digit_regex, value[-1]) is not None:
             pulled_dic[key][todaysdate] = { 'new': value[ value.find('+')+1 : ], 'total': value[ : value.find('+') :  ]  }
 
-
-if dictionary_exists:
-    print(pulled_dic['Schneeberg'])
-    # print(type(pulled_dic))
-
-print('dictionary_exists =', dictionary_exists)
-
-# current working save file, leave here until the dictionary is
-# fully functional:
-timestr = time.strftime("%d-%m-%Y-%H%M%S")
-with open(timestr + "-corona-tabelle.txt", "w") as file:
-    file.write(str(list1))
-
 # save the current dictionary, to a file:
 if dictionary_exists:
     with open("mySavedDict.txt", "wb") as myFile:
@@ -122,4 +101,3 @@ if dictionary_exists:
 if not dictionary_exists:
     with open("mySavedDict.txt", "wb") as myFile:
         pickle.dump(dic, myFile)
-
