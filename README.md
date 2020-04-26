@@ -7,13 +7,9 @@ Sorts cases by area ('Ort'), stores area names, new cases and updated cases in a
 
 Saves the dictionary using pickle. Pickle is awesome!
 
-Required imports:
-re
-time
-pickle
-bs4 / BeautifulSoup
+Required imports:\
+re\
+time\
+pickle\
+bs4 / BeautifulSoup\
 urllib.request / urlopen
-
-A work in progress. If you have any feedback or suggestions, let me know. :)
-
--mike cullen
